@@ -1,7 +1,8 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b1525"><title>ScooterCheck Pro 3.0 – Protokollreferenz</title><style>
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b1525"><title>ScooterCheck Pro 3.1 – Authentifizierungstest</title><style>
 :root{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e9f1fc;background:#0b1525;font-size:15px}*{box-sizing:border-box}body{margin:0}main{max-width:820px;margin:auto;padding:18px 15px 55px}h1{font-size:24px;margin:4px 0}h2{font-size:17px;margin:0 0 12px}p{line-height:1.45;color:#bdcce0}.sub{font-size:13px;color:#a6bdd3}.card{background:#132239;border:1px solid #294057;padding:17px;margin-top:14px;border-radius:15px}.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}.pill{border-radius:100px;padding:5px 10px;background:#334057;font-size:12px}.muted{color:#a6bdd3}button,.btn{background:#3494ed;color:#041427;border:0;border-radius:10px;padding:12px 14px;font-size:14px;font-weight:700;cursor:pointer}button.secondary{background:#273b53;color:#f1f6fd}button:disabled{opacity:.55}input,select{background:#0d1a2d;color:#fff;border:1px solid #45617d;border-radius:8px;padding:10px;width:100%;font:inherit}label{display:block;margin:11px 0 5px;color:#cad8e8}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.value{background:#0e1c30;border-radius:10px;padding:12px}.value b{display:block;font-size:21px;margin-top:6px;overflow-wrap:anywhere}.warn{border-left:4px solid #f0b65a;padding:9px 12px;background:#3b3022;border-radius:5px;color:#ffe4ae}.ok{color:#83deb5}.bad{color:#ffc180}.mono{font:12px ui-monospace,SFMono-Regular,monospace;overflow-wrap:anywhere}pre{white-space:pre-wrap;word-break:break-word;background:#0a1729;border-radius:8px;padding:12px;max-height:230px;overflow:auto;font-size:12px}table{border-collapse:collapse;width:100%;font-size:13px}td,th{padding:9px 6px;border-bottom:1px solid #2d4259;text-align:left;vertical-align:top;overflow-wrap:anywhere}canvas{width:100%;height:165px;background:#0c1b2d;border-radius:9px}small{color:#aec0d3}a{color:#80c6ff} .tag{color:#89adcf;font-size:12px}footer{padding:25px 0;color:#aec0d3;font-size:12px}details{margin-top:12px}summary{cursor:pointer}
 </style></head><body><main>
-<header><div class="row between"><span class="pill">Beta 3.0 · Diagnoseprotokoll</span><span class="pill">Gen2 PRE_COMM erfolgreich getestet</span></div><h1>🛴 ScooterCheck Pro</h1><div class="sub">Seriennummer aus PRE_COMM, Kopplungsstatus und Vergleich mit der neuen MAX-G3-HCI-Diagnoseaufzeichnung · ohne neue Kopplungs- oder Konfigurationsbefehle</div></header>
+<header><div class="row between"><span class="pill">Beta 3.1 · Authentifizierungstest</span><span class="pill">Gen2 PRE_COMM erfolgreich getestet</span></div><h1>🛴 ScooterCheck Pro</h1><div class="sub">Vorbereitung der MAX-G3-Authentifizierung mit lokalem Kryptografie-Selbsttest. Neue Fahrzeugkopplung bleibt bis zur geprüften Passwortverwaltung deaktiviert.</div></header>
+<section class="card"><h2>3.1 · Authentifizierung vorbereiten (nur MAX G3)</h2><p>Die bestehende Kopplung kann nur mit dem dazugehörigen Passwort wiederverwendet werden. Eine Neukopplung per Power-Button würde ein neues Passwort erzeugen und könnte die vorhandene ScooterHacking-Kopplung verändern. Deshalb prüft dieser Schritt zunächst den verschlüsselten Gen2-Nachrichtenaufbau vollständig <strong>ohne Bluetooth-Schreibzugriff</strong>.</p><div class="grid"><div class="value"><small>Verschlüsselung</small><b style="font-size:16px" id="snCryptoState">Noch nicht geprüft</b></div><div class="value"><small>Live-Neukopplung</small><b style="font-size:16px">Noch gesperrt</b></div></div><div class="row" style="margin-top:12px"><button class="secondary" id="snCryptoTest">Gen2-Verschlüsselung lokal prüfen</button></div><p id="snCryptoDetail" class="sub" role="status">Der Test verwendet ausschließlich synthetische Zufallswerte. Es wird weder ein Scooter kontaktiert noch ein Schlüssel gespeichert oder ausgegeben.</p><p class="warn">Wichtig: Der Test bestätigt nur die lokale Implementierung, keine Kompatibilität mit einem realen MAX G3 und keine erfolgreiche Authentifizierung. SET_PWD, AUTH, Firmware- und Konfigurationsbefehle werden weiterhin nicht gesendet.</p></section>
 <section class="card"><h2>3.0 · Neue MAX-G3-Referenz (27.10.2026)</h2><p class="sub">Lokale Metadatenauswertung eines vom Prüfer bereitgestellten Android-Bluetooth-Mitschnitts. Laut Prüfer war ausschließlich ScooterHacking Utility mit dem MAX G3 verbunden. Die Zahlen enthalten <strong>keine Nutzdaten, Schlüssel, Hardware-UIDs oder Passwortbytes</strong>.</p><div class="grid"><div class="value"><small>App → Scooter</small><b>32</b><small>Nordic-UART-Schreibbefehle</small></div><div class="value"><small>Scooter → App</small><b>21</b><small>Nordic-UART-Benachrichtigungen</small></div><div class="value"><small>PRE_COMM-Anfrage / Antwort</small><b>13 / 43</b><small>Byte, Rahmenkennungen vorhanden</small></div><div class="value"><small>Beobachtete Sitzungsdauer</small><b>11 s</b><small>08:16:20–08:16:31 Uhr MEZ</small></div></div><p class="sub">Zeitlicher Ablauf: erste PRE_COMM-Antwort → längere Nachrichten (27/29 Byte, mutmaßlich Kopplungs-/Authentifizierungsphase) → kurze 15-Byte-Anfragen mit Antworten unterschiedlicher Länge. Die Zuordnung zu Firmware- oder Kilometerregistern ist noch offen.</p><p class="warn">Die genannten Paketlängen beweisen weder eine erfolgreiche Authentifizierung noch einen bestimmten Registerinhalt. Es werden keine unbekannten, aufgezeichneten Befehle wiederholt. Das ist ausschließlich eine Offline-Protokollreferenz.</p></section>
 <section class="card"><h2>2.6 · Referenzvergleich mit XiaoDash-Aufzeichnung</h2><p class="sub">Die Android-HCI-Aufzeichnung zeigte Kommunikation über Nordic UART. Folgende Zahlen sind ausschließlich <strong>technische Metadaten</strong> aus einer früheren Sitzung; keinerlei Rohpakete, Kennwörter, Schlüssel oder persönliche Android-Protokolle sind in dieser App enthalten.</p><div class="grid"><div class="value"><small>Referenz: App → Scooter</small><b>873</b><small>ATT Write Commands, NUS TX</small></div><div class="value"><small>Referenz: Scooter → App</small><b>817</b><small>ATT Notifications, NUS RX</small></div><div class="value"><small>Referenz: 5A-A5-Rahmen empfangen</small><b>817</b><small>Rahmenkennung, keine Nutzdatenprüfung</small></div><div class="value"><small>Diese Sitzung: 5A-A5-RX-Nachrichten</small><b id="liveReferenceRx">0</b><small>Nur aktuell empfangene BLE-Benachrichtigungen</small></div></div><p id="referenceComparison" class="sub">Noch nicht verbunden. Die Referenz bestätigt einen Transportweg, aber nicht den Inhalt der Authentifizierung.</p><details><summary>Technische Referenzdaten ohne Nutzlast</summary><pre>Dienst: Nordic UART 6e400001-b5a3-f393-e0a9-e50e24dcca9e | TX: 6e400002-b5a3-f393-e0a9-e50e24dcca9e | RX: 6e400003-b5a3-f393-e0a9-e50e24dcca9e | Gesendete TX-Nutzdatenbytes: 12.360 | Empfangene RX-Nutzdatenbytes: 111.495 | RX-Nachrichten mit 5A-A5-Kennung: 817 / 817 | Häufige TX-Paketgröße: 14 Bytes (820 Nachrichten) | Häufige RX-Paketgröße: 141 Bytes (786 Nachrichten) | Quelle: Strukturstatistik aus Android-HCI-Mitschnitt; keine Inhalte importiert.</pre></details><p class="warn">Dieselben UUIDs und Rahmenanfänge beweisen keine erfolgreiche Authentifizierung und legen weder Seriennummer noch Firmware offen. Keine Anfragen aus dem Mitschnitt werden automatisch wiederholt.</p></section>
 <section class="card"><h2>Fahrzeugakte · aktuelle Sitzung</h2><p class="sub">Live-Übersicht der tatsächlichen ScooterCheck-Messungen. Fahrzeugname ist zunächst nur eine Bluetooth-Bezeichnung; Modell, Seriennummer und Kilometerstand gelten erst nach einer belegten Protokollantwort als automatisch ausgelesen.</p><div class="grid"><div class="value"><small>Bluetooth-Verbindung</small><b id="dashConnection" style="font-size:16px">Nicht verbunden</b></div><div class="value"><small>Bluetooth-Gerätename</small><b id="dashDevice" style="font-size:15px">–</b></div><div class="value"><small>Bestätigtes Modell</small><b id="dashModel" style="font-size:15px">Nicht ermittelt</b></div><div class="value"><small>Bestätigte Seriennummer</small><b id="dashSerial" style="font-size:15px">Nicht ermittelt</b></div><div class="value"><small>Kilometerstand</small><b id="dashMileage" style="font-size:15px">Nicht ausgelesen</b></div><div class="value"><small>Firmware BLE / VCU / MCU / BMS</small><b id="dashFirmware" style="font-size:15px">Nicht ausgelesen</b></div><div class="value"><small>GATT-Dienste / lesbare Eigenschaften</small><b id="dashGatt" style="font-size:15px">0 / 0</b></div><div class="value"><small>Automatische Tuningbewertung</small><b id="dashAssessment" style="font-size:15px">Nicht bestimmbar</b></div></div><p class="warn">Die unten manuell eintragbaren Daten aus XiaoDash, ScooterTuning oder ScooterHacking werden getrennt aufgeführt und ersetzen keine automatische Fahrzeugmessung.</p><details><summary>Externe Angaben getrennt anzeigen</summary><pre id="dashExternal">Keine externen Angaben eingegeben.</pre></details></section>
@@ -175,6 +176,65 @@ function encodePrecomm(stream){
   const checksum=(~clear.reduce((sum,b)=>sum+b,0))&0xffff;
   return joinArrays([0x5a,0xa5,0],clear.map((b,i)=>b^stream[i]),[0,0,checksum&255,checksum>>8,0,0]);
 }
+// Pure, offline Gen2 SN-mode test implementation. No pairing material from
+// a real scooter is accepted, persisted, logged, or exported by this module.
+const xor16=(a,b)=>Uint8Array.from(a,(x,i)=>x^b[i]);
+async function snAesKey(key1,key2){
+  const first=new Uint8Array(16),second=new Uint8Array(16);
+  first.set(key1.slice(0,16));second.set(key2.slice(0,16));
+  return new Uint8Array(await crypto.subtle.digest('SHA-1',joinArrays(first,second))).slice(0,16);
+}
+function snNonce(counter,challenge){
+  const n=new Uint8Array(13);
+  n[0]=(counter>>>24)&255;n[1]=(counter>>>16)&255;n[2]=(counter>>>8)&255;n[3]=counter&255;
+  n.set(challenge.slice(0,8),4);return n;
+}
+async function snBlock(key,nonce,mode,index){return aesBlock(key,joinArrays([mode],nonce,[0,index]));}
+async function snTag(key,plaintext,nonce){
+  const payload=plaintext.slice(3),b0=joinArrays([0x59],nonce,[0,payload.length&255]);
+  let state=await aesBlock(key,b0);
+  const aad=new Uint8Array(16);aad.set(plaintext.slice(0,3));state=await aesBlock(key,xor16(state,aad));
+  for(let start=0;start<payload.length;start+=16){const block=new Uint8Array(16);block.set(payload.slice(start,start+16));state=await aesBlock(key,xor16(state,block))}
+  return state.slice(0,4);
+}
+async function snCryptPayload(key,payload,nonce){
+  const result=new Uint8Array(payload.length);
+  for(let start=0;start<payload.length;start+=16){const stream=await snBlock(key,nonce,0x01,1+Math.floor(start/16));for(let j=start;j<Math.min(start+16,payload.length);j++)result[j]=payload[j]^stream[j-start]}
+  return result;
+}
+async function snEncrypt(key,challenge,plaintext,counter){
+  if(counter<1||counter>65535||plaintext.length<7||plaintext[0]!==0x5a||plaintext[1]!==0xa5||plaintext[2]!==plaintext.length-7)throw Error('Ungültiger Test-Rahmen');
+  const nonce=snNonce(counter,challenge),payload=await snCryptPayload(key,plaintext.slice(3),nonce),tag=await snTag(key,plaintext,nonce),tagStream=await snBlock(key,nonce,0x01,0);
+  return joinArrays(plaintext.slice(0,3),payload,Uint8Array.from(tag,(b,i)=>b^tagStream[i]),[(counter>>>8)&255,counter&255]);
+}
+async function snDecrypt(key,challenge,frame){
+  if(frame.length<13||frame[0]!==0x5a||frame[1]!==0xa5||frame[2]!==frame.length-13)throw Error('Ungültiger verschlüsselter Rahmen');
+  const counter=(frame[frame.length-2]<<8)|frame[frame.length-1];if(!counter)throw Error('Ungültiger Nachrichtenzähler');
+  const nonce=snNonce(counter,challenge),body=await snCryptPayload(key,frame.slice(3,-6),nonce),clear=joinArrays(frame.slice(0,3),body),tag=await snTag(key,clear,nonce),tagStream=await snBlock(key,nonce,0x01,0);
+  let diff=0;for(let i=0;i<4;i++)diff|=(tag[i]^tagStream[i])^frame[frame.length-6+i];
+  if(diff!==0)throw Error('Authentizitätsprüfung fehlgeschlagen');
+  return {plaintext:clear,counter};
+}
+async function testSnCrypto(){
+  const label=$('snCryptoDetail');$('snCryptoState').textContent='Prüfung läuft …';
+  try{
+    if(!crypto?.subtle||!crypto.getRandomValues)throw Error('WebCrypto nicht verfügbar');
+    const challenge=crypto.getRandomValues(new Uint8Array(16)),password=crypto.getRandomValues(new Uint8Array(16));
+    const key=await snAesKey(password,challenge),payload=crypto.getRandomValues(new Uint8Array(16));
+    const clear=joinArrays([0x5a,0xa5,0x10,0x3e,0x04,0x5c,0x00],payload);
+    for(const counter of [2,3,257]){
+      const frame=await snEncrypt(key,challenge,clear,counter),decoded=await snDecrypt(key,challenge,frame);
+      if(frame.length!==clear.length+6||decoded.counter!==counter||!decoded.plaintext.every((b,i)=>b===clear[i]))throw Error('Roundtrip oder Zähler falsch');
+      const altered=new Uint8Array(frame);altered[9]^=1;
+      let rejected=false;try{await snDecrypt(key,challenge,altered)}catch{rejected=true}
+      if(!rejected)throw Error('Manipulierter Rahmen wurde nicht verworfen');
+    }
+    $('snCryptoState').textContent='Lokal bestanden';
+    label.textContent='3 synthetische SN-Mode-Rahmen mit verschiedenen Zählern erfolgreich verschlüsselt und authentifiziert entschlüsselt. Manipulierte Rahmen wurden abgewiesen. Keine Kommunikation mit dem Scooter, keine Zugangsdaten gespeichert.';
+    snCryptoTestResult={passed:true,checkedAt:now(),source:'synthetic offline self-test',vehicleAuthentication:false,vehicleWrites:0};
+  }catch(error){$('snCryptoState').textContent='Nicht bestanden';label.textContent='Lokaler Test fehlgeschlagen: '+error.message;snCryptoTestResult={passed:false,checkedAt:now(),errorClass:error.name,vehicleAuthentication:false,vehicleWrites:0}}
+}
+let snCryptoTestResult=null;
 function stopProbe(message){probeActive=false;probeBuffer=[];if(probeTimeout){clearTimeout(probeTimeout);probeTimeout=null}$('cancelPrecomm').disabled=true;$('precomm').disabled=true;if(message)$('precommStatus').textContent=message;}
 async function decodeProbeFrame(frame){
   if(!probeKey)return;
@@ -308,6 +368,10 @@ function prepareReport(){
   report.version='2.7-beta-gen2-precomm-reference-verified';
   report.version='2.9-beta-gen2-pairing-state-readout';
   report.version='3.0-beta-max-g3-hci-read-reference';
+  report.version='3.1-beta-gen2-sn-auth-offline-validation';
+  report.gen2SnCryptoSelfTest=snCryptoTestResult;
+  report.pairingImplementationState={referenceModel:'Max G3 / G3D',newPairingWritesEnabled:false,storedPasswordHandlingImplemented:false,authenticationImplemented:false,reason:'New pairing can invalidate existing app credentials; first validate cryptography and secure credential handling offline'};
+  report.limits.push('SN-mode self-test uses synthetic vectors only; no SET_PWD or AUTH write available');
   report.externalHciProtocolReference={source:'operator-provided Android bugreport from 2026-10-27; privacy-filtered structural analysis only',sourceAppAttribution:'ScooterHacking Utility with MAX G3, per operator statement',captureStartUtc:'2026-10-27T07:16:20.528Z',captureEndUtc:'2026-10-27T07:16:31.526Z',nusTxWrites:32,nusRxNotifications:21,precommRequestLengthBytes:13,precommResponseLengthBytes:43,subsequentWriteLengthsBytes:[27,29,15],dataRegistersDecoded:false,authenticationProven:false,containsPacketPayloads:false,activeCommandsReplayed:false};
   report.limits.push('The 2026-10-27 MAX G3 HCI reference is structural metadata only; it does not disclose or verify post-authentication register addresses, vehicle firmware, or mileage');
   report.pairingStateAssessment={source:'decrypted PRE_COMM response index; no credential extraction',storedPasswordFlag:probeResult?.storedPasswordFlag??null,credentialKnownToScooterCheck:false,fullAuthenticationPerformed:false,readCommandsSent:0};
@@ -376,6 +440,7 @@ async function downloadRawEvidence(){
 $('exportRaw').onclick=downloadRawEvidence;
 $('demo').addEventListener('click',resetCapture);
 $('clear').addEventListener('click',resetCapture);
+$('snCryptoTest').onclick=testSnCrypto;
 for(const id of ['externalSource','extBLE','extVCU','extMCU','extBMS','extRegion','extMileage'])$(id).addEventListener('input',renderDashboard);
 for(const id of ['externalSource','extVCU'])$(id).addEventListener('input',()=>{knownFirmwareComparison=null;$('knownFirmwareResult').textContent='Eingabewerte geändert – bitte Abgleich erneut ausführen.'});
 $('testmodel').addEventListener('change',()=>{knownFirmwareComparison=null;$('knownFirmwareResult').textContent='Modell geändert – bitte Abgleich erneut ausführen.'});
